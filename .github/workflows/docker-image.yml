@@ -31,21 +31,23 @@ jobs:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         NEW_VERSION: ${{ steps.version.outputs.vesion }}
+        
       run: |
         echo "Login Started"
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         echo "New Version: $NEW_VERSION"
 
-    # - name: Build docker image
-    #   run: |
-    #     docker build -t tebasp/docker-graphql-actions:0.0.2 .
-    #     docker build -t tebasp/docker-graphql-actions:latest .
+    - name: Build docker image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        docker build -t tebasp/docker-graphql-actions:$NEW_VERSION .
+        docker build -t tebasp/docker-graphql-actions:latest .
 
-    # - name: Push docker image
-    #   run: |
-    #     docker push tebasp/docker-graphql-actions:0.0.2
-    #     docker push tebasp/docker-graphql-actions:latest
+    - name: Push docker image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        docker push tebasp/docker-graphql-actions:$NEW_VERSION
+        docker push tebasp/docker-graphql-actions:latest
         
-    
-    # - name: Build the Docker image
-    #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
