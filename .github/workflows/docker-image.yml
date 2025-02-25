@@ -29,10 +29,12 @@ jobs:
     - name: Build docker image
       run: |
         docker build -t tebasp/docker-graphql-actions:0.0.2 .
+        docker build -t tebasp/docker-graphql-actions:latest .
 
     - name: Push docker image
       run: |
         docker push tebasp/docker-graphql-actions:0.0.2
+        docker push tebasp/docker-graphql-actions:latest
         
     
     # - name: Build the Docker image
